@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">QuizDroid</string>
+    <string name="topics">Topics</string>
+    <string name="action_settings">Settings</string>
+    <string name="topic_math">Math</string>
+    <string name="topic_physics">Physics</string>
+    <string name="topic_super_heroes">Super Heroes</string>
+
+
+</resources>
