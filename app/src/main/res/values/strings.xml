@@ -13,10 +13,12 @@
     <string name="start_quiz">Begin</string>
     <string name="questions_count">Questions:</string>
     <string name="description">Description:</string>
-    <string name="topic_math_description">        History of math, mathematical concepts and problems.</string>
-    <string name="topic_physics_description">        History of physics, physical concepts and problems.</string>
-    <string name="topic_super_heroes_description">        Marvel super heroes, comic books and movie lore.</string>
+    <string name="topic_math_description">History of math, mathematical concepts and problems.</string>
+    <string name="topic_physics_description">History of physics, physical concepts and problems.</string>
+    <string name="topic_super_heroes_description">Marvel super heroes, comic books and movie lore.</string>
     <string name="title_activity_quiz">QuizDroid</string>
     <string name="hello_world">Hello world!</string>
+    
+    <!-- QuizActivity -->
 
 </resources>
