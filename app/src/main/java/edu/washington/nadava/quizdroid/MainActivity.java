@@ -1,19 +1,46 @@
 package edu.washington.nadava.quizdroid;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity {
+    public static final String TAG = "MainActivity";
+    public static final String TOPIC_MESSAGE = "edu.washington.nadava.quizdroid.TOPIC";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.setTitle(R.string.topics);
+        this.setTitle(getString(R.string.app_name) + " - " + getString(R.string.topics));
+
+        final ListView topicsList = (ListView)findViewById(R.id.topics_list);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        adapter.add(getString(R.string.topic_math));
+        adapter.add(getString(R.string.topic_physics));
+        adapter.add(getString(R.string.topic_super_heroes));
+        topicsList.setAdapter(adapter);
+
+        topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String topic = adapter.getItem(position);
+                Log.d(TAG, "Topic clicked: " + topic);
+
+                Intent topicViewIntent = new Intent(MainActivity.this, TopicActivity.class);
+                topicViewIntent.putExtra(TOPIC_MESSAGE, topic);
+                startActivity(topicViewIntent);
+            }
+        });
     }
 
 
