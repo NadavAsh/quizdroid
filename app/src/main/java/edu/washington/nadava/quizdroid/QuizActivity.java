@@ -1,5 +1,6 @@
 package edu.washington.nadava.quizdroid;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -17,6 +18,16 @@ import android.widget.TextView;
 
 public class QuizActivity extends ActionBarActivity {
     public static final String TAG = "QuizActivity";
+    public static final String ANSWER_MESSAGE = "edu.washington.nadava.quizdroid.ANSWER";
+    public static final String CHOICE_MESSAGE = "edu.washington.nadava.quizdroid.CHOICE";
+    public static final String CORRECT_MESSAGE = "edu.washington.nadava.quizdroid.CORRECT";
+    public static final String NUM_QUESTIONS_MESSAGE =
+            "edu.washington.nadava.quizdroid.NUM_QUESTIONS";
+    public static final String NUM_CORRECT_MESSAGE = "edu.washington.nadava.quizdroid.NUM_CORRECT";
+
+    private String correctAnswer;
+    private int numQuestions;
+    private int numCorrect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,43 +42,43 @@ public class QuizActivity extends ActionBarActivity {
             RadioButton answerButton = new RadioButton(this);
             answerButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
             answerButton.setText("Answer " + i);
-            answerButton.setTag(i);
+            answerButton.setTag(i == 2);
+            if (i == 2) {
+                correctAnswer = answerButton.getText().toString();
+            }
             radioGroup.addView(answerButton);
         }
 
-        Button submitButton = (Button)findViewById(R.id.submitButton);
+        final Button submitButton = (Button)findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 RadioButton checked =
                         (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
-                int tag = ((Integer)checked.getTag()).intValue();
+                boolean tag = ((Boolean)checked.getTag()).booleanValue();
                 Log.d(TAG, "Submitted answer #" + tag);
+
+                Intent answerIntent = new Intent(QuizActivity.this, AnswerActivity.class);
+                answerIntent.putExtra(ANSWER_MESSAGE, correctAnswer);
+                answerIntent.putExtra(CHOICE_MESSAGE, checked.getText().toString());
+                answerIntent.putExtra(CORRECT_MESSAGE, tag);
+                startActivity(answerIntent);
+                finish();
+            }
+        });
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                submitButton.setEnabled(true);
             }
         });
     }
 
+    private void processIntent() {
+        Intent intent = getIntent();
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_quiz, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+        numQuestions = intent.getIntExtra(NUM_QUESTIONS_MESSAGE, 0);
+        numCorrect = intent.getIntExtra(NUM_CORRECT_MESSAGE, 0);
     }
 }
