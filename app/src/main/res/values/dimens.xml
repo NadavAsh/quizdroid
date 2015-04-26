@@ -4,4 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     
     <dimen name="text_topic_title_size">36sp</dimen>
+    <dimen name="button_submit_height">65dp</dimen>
 </resources>
