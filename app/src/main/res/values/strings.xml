@@ -23,4 +23,13 @@
     <string name="submit">Submit</string>
     <string name="title_activity_answer">QuizDroid - Answer</string>
 
+    <!-- AnswerActivity -->
+    <string name="your_answer">Your answer:</string>
+    <string name="correct_answer">Correct answer:</string>
+    <string name="next_question">Next question</string>
+    <string name="finish_quiz">Finish</string>
+    <string name="answered_corretly">Correct! :)</string>
+    <string name="answered_incorrectly">Incorrect :(</string>
+    <string name="quiz_stats" formatted="false">Answered %d out of %d questions correctly.</string>
+
 </resources>

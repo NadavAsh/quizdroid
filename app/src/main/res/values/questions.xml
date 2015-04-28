@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Math -->
+    <string-array name="math_questions">
+        <item>What is the result of 1 + 2?</item>
+        <item>What is the value of PI?</item>
+        <item>Where was Paul Erdos born?</item>
+    </string-array>
+
+    <string-array name="math_answers">
+        <item>1|2|3|4</item>
+        <item>3.1415|2.7182|0.5772|1.61803</item>
+        <item>Bulgaria|England|Germany|Hungary</item>
+    </string-array>
+
+    <integer-array name="math_correct_answers">
+        <item>2</item>
+        <item>0</item>
+        <item>3</item>
+    </integer-array>
+
+    <!-- Physics -->
+    <string-array name="physics_questions">
+        <item>Who came up with the theory of relativity?</item>
+        <item>What is the Earth\'s gravitational acceleration?</item>
+        <item>Who discovered black holes?</item>
+    </string-array>
+
+    <string-array name="physics_answers">
+        <item>Isaac Newton|Albert Einstein|Nikola Tesla|Stephen Hawking</item>
+        <item>9.8m/s^2|5.2m/s^2|15m/s^2|2.1m/s^2</item>
+        <item>Stephen Hawking|Isaac Newton|Albert Einstein|Nikola Tesla</item>
+    </string-array>
+
+    <integer-array name="physics_correct_answers">
+        <item>1</item>
+        <item>0</item>
+        <item>2</item>
+    </integer-array>
+
+    <!-- Marvel Super Heroes -->
+    <string-array name="heroes_questions">
+        <item>What\'s Iron Man\'s real name?</item>
+        <item>How did Spider-Man get his powers?</item>
+        <item>What makes the Robert Bruce Banner become the Hulk?</item>
+    </string-array>
+
+    <string-array name="heroes_answers">
+        <item>Peter Parker|John Doe|Robert Banner|Tony Stark</item>
+        <item>Radioactive spider|A magical spell|A nuclear bomb|Pollution</item>
+        <item>Loud noises|Anger|Spicy food|Opera vocals</item>
+    </string-array>
+
+    <integer-array name="heroes_correct_answers">
+        <item>3</item>
+        <item>0</item>
+        <item>3</item>
+    </integer-array>
+
+</resources>
