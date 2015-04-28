@@ -9,7 +9,7 @@
 
     <string-array name="math_answers">
         <item>1|2|3|4</item>
-        <item>3.1415|2.7182|0.5772|1.61803</item>
+        <item>3.1415...|2.7182...|0.5772...|1.61803...</item>
         <item>Bulgaria|England|Germany|Hungary</item>
     </string-array>
 
