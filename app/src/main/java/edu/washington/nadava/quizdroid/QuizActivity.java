@@ -1,5 +1,7 @@
 package edu.washington.nadava.quizdroid;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.app.ActionBarActivity;
@@ -17,21 +19,20 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 
-public class QuizActivity extends ActionBarActivity {
+public class QuizActivity extends ActionBarActivity implements QuestionFragment.OnAnswerSubmittedListener,
+        TopicOverviewFragment.OnBeginQuizListener {
     public static final String TAG = "QuizActivity";
-    public static final String ANSWER_MESSAGE = "edu.washington.nadava.quizdroid.ANSWER";
-    public static final String CHOICE_MESSAGE = "edu.washington.nadava.quizdroid.CHOICE";
-    public static final String CORRECT_MESSAGE = "edu.washington.nadava.quizdroid.CORRECT";
     public static final String NUM_QUESTIONS_MESSAGE =
             "edu.washington.nadava.quizdroid.NUM_QUESTIONS";
     public static final String NUM_CORRECT_MESSAGE = "edu.washington.nadava.quizdroid.NUM_CORRECT";
     public static final String PROMPT_MESSAGE = "edu.washington.nadava.quizdroid.PROMPT";
+    public static final String ANSWERS_MESSAGE = "edu.washington.nadava.quizdroid.ANSWERS";
 
-    private int numQuestions;
+    private int numAnswered;
     private int numCorrect;
-    private String question;
+    private String[] questions;
     private String[] answers;
-    private int correctAnswer;
+    private int[] correctAnswers;
     private String topic;
 
     @Override
@@ -41,56 +42,21 @@ public class QuizActivity extends ActionBarActivity {
 
         processIntent();
 
-        TextView promptText = (TextView)findViewById(R.id.text_view_prompt);
-        promptText.setText(question);
+        Bundle args = new Bundle();
+        args.putString(MainActivity.TOPIC_MESSAGE, topic);
+        args.putInt(TopicOverviewFragment.QUESTION_COUNT_MESSAGE, questions.length);
 
-        final RadioGroup radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
-        for (int i = 0; i < answers.length; ++i) {
-            RadioButton answerButton = new RadioButton(this);
-            answerButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 24);
-            answerButton.setText(answers[i]);
-            answerButton.setTag(i);
-            radioGroup.addView(answerButton);
-        }
-
-        final Button submitButton = (Button)findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RadioButton checked =
-                        (RadioButton)findViewById(radioGroup.getCheckedRadioButtonId());
-                int tag = ((Integer)checked.getTag()).intValue();
-                Log.d(TAG, "Submitted answer #" + tag);
-
-                Intent answerIntent = new Intent(QuizActivity.this, AnswerActivity.class);
-                answerIntent.putExtra(MainActivity.TOPIC_MESSAGE, topic);
-                answerIntent.putExtra(PROMPT_MESSAGE, question);
-                answerIntent.putExtra(NUM_QUESTIONS_MESSAGE, numQuestions + 1);
-                answerIntent.putExtra(NUM_CORRECT_MESSAGE, tag == correctAnswer ? numCorrect + 1 :
-                                      numCorrect);
-                answerIntent.putExtra(ANSWER_MESSAGE, answers[correctAnswer]);
-                answerIntent.putExtra(CHOICE_MESSAGE, checked.getText().toString());
-                answerIntent.putExtra(CORRECT_MESSAGE, tag == correctAnswer);
-                startActivity(answerIntent);
-                finish();
-            }
-        });
-
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                submitButton.setEnabled(true);
-            }
-        });
+        Fragment topicFragment = new TopicOverviewFragment();
+        topicFragment.setArguments(args);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.quiz_fragment_container, topicFragment)
+                .commit();
     }
 
     private void processIntent() {
         Intent intent = getIntent();
-        numQuestions = intent.getIntExtra(NUM_QUESTIONS_MESSAGE, 0);
-        numCorrect = intent.getIntExtra(NUM_CORRECT_MESSAGE, 0);
 
         int[] resources = null;
-
         topic = intent.getStringExtra(MainActivity.TOPIC_MESSAGE);
         switch (topic) {
             case "Math":
@@ -117,8 +83,31 @@ public class QuizActivity extends ActionBarActivity {
         }
 
         Resources res = getResources();
-        question = res.getStringArray(resources[0])[numQuestions];
-        answers = res.getStringArray(resources[1])[numQuestions].split("\\|");
-        correctAnswer = res.getIntArray(resources[2])[numQuestions];
+        questions = res.getStringArray(resources[0]);
+        answers = res.getStringArray(resources[1]);
+        correctAnswers = res.getIntArray(resources[2]);
+    }
+
+    @Override
+    public void onAnswerSubmittedListener(int answerIndex) {
+        if (answerIndex == correctAnswers[numAnswered]) {
+            ++numCorrect;
+        }
+        ++numAnswered;
+
+        onBeginQuiz();
+    }
+
+    @Override
+    public void onBeginQuiz() {
+        Bundle bundle = new Bundle();
+        bundle.putString(PROMPT_MESSAGE, questions[numAnswered]);
+        bundle.putStringArray(ANSWERS_MESSAGE, answers[numAnswered].split("\\|"));
+
+        Fragment fragment = new QuestionFragment();
+        fragment.setArguments(bundle);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.quiz_fragment_container, fragment)
+                .commit();
     }
 }

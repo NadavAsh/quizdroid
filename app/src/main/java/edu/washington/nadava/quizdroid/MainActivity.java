@@ -36,9 +36,9 @@ public class MainActivity extends ActionBarActivity {
                 String topic = adapter.getItem(position);
                 Log.d(TAG, "Topic clicked: " + topic);
 
-                Intent topicViewIntent = new Intent(MainActivity.this, TopicActivity.class);
-                topicViewIntent.putExtra(TOPIC_MESSAGE, topic);
-                startActivity(topicViewIntent);
+                Intent quizActivityIntent = new Intent(MainActivity.this, QuizActivity.class);
+                quizActivityIntent.putExtra(TOPIC_MESSAGE, topic);
+                startActivity(quizActivityIntent);
             }
         });
     }
