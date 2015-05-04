@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 
 public class QuizActivity extends ActionBarActivity implements QuestionFragment.OnAnswerSubmittedListener,
-        TopicOverviewFragment.OnBeginQuizListener {
+        TopicOverviewFragment.OnBeginQuizListener, AnswerFragment.OnProceedQuizListener {
     public static final String TAG = "QuizActivity";
     public static final String NUM_QUESTIONS_MESSAGE =
             "edu.washington.nadava.quizdroid.NUM_QUESTIONS";
@@ -31,7 +31,7 @@ public class QuizActivity extends ActionBarActivity implements QuestionFragment.
     private int numAnswered;
     private int numCorrect;
     private String[] questions;
-    private String[] answers;
+    private String[][] answers;
     private int[] correctAnswers;
     private String topic;
 
@@ -84,30 +84,65 @@ public class QuizActivity extends ActionBarActivity implements QuestionFragment.
 
         Resources res = getResources();
         questions = res.getStringArray(resources[0]);
-        answers = res.getStringArray(resources[1]);
+
+        String[] preAnswers = res.getStringArray(resources[1]);
+        answers = new String[preAnswers.length][];
+        for (int i = 0; i < preAnswers.length; ++i) {
+            answers[i] = preAnswers[i].split("\\|");
+        }
+
         correctAnswers = res.getIntArray(resources[2]);
     }
 
     @Override
     public void onAnswerSubmittedListener(int answerIndex) {
-        if (answerIndex == correctAnswers[numAnswered]) {
+        int current = numAnswered;
+
+        int correctIndex = correctAnswers[numAnswered];
+        boolean correct = answerIndex == correctIndex;
+        if (correct) {
             ++numCorrect;
         }
         ++numAnswered;
 
-        onBeginQuiz();
+        Bundle bundle = new Bundle();
+        bundle.putInt(NUM_QUESTIONS_MESSAGE, numAnswered);
+        bundle.putInt(NUM_CORRECT_MESSAGE, numCorrect);
+        bundle.putString(PROMPT_MESSAGE, questions[current]);
+        bundle.putString(AnswerFragment.CHOICE_MESSAGE, answers[current][answerIndex]);
+        bundle.putString(AnswerFragment.CORRECT_ANSWER_MESSAGE, answers[current][correctIndex]);
+        bundle.putBoolean(AnswerFragment.CORRECT_MESSAGE, correct);
+        bundle.putBoolean(AnswerFragment.LAST_MESSAGE, numAnswered >= questions.length);
+
+        Fragment answerFragment = new AnswerFragment();
+        answerFragment.setArguments(bundle);
+
+        getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+                .replace(R.id.quiz_fragment_container, answerFragment)
+                .commit();
     }
 
     @Override
     public void onBeginQuiz() {
         Bundle bundle = new Bundle();
         bundle.putString(PROMPT_MESSAGE, questions[numAnswered]);
-        bundle.putStringArray(ANSWERS_MESSAGE, answers[numAnswered].split("\\|"));
+        bundle.putStringArray(ANSWERS_MESSAGE, answers[numAnswered]);
 
         Fragment fragment = new QuestionFragment();
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
+                .setCustomAnimations(R.animator.card_flip_left_in, R.animator.card_flip_left_out)
                 .replace(R.id.quiz_fragment_container, fragment)
                 .commit();
+    }
+
+    @Override
+    public void onProceedQuiz() {
+        if (numAnswered >= questions.length) {
+            finish();
+        } else {
+            onBeginQuiz();
+        }
     }
 }
