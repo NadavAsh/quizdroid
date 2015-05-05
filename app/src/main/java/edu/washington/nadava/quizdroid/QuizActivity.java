@@ -19,8 +19,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 
-public class QuizActivity extends ActionBarActivity implements QuestionFragment.OnAnswerSubmittedListener,
-        TopicOverviewFragment.OnBeginQuizListener, AnswerFragment.OnProceedQuizListener {
+public class QuizActivity extends ActionBarActivity implements
+        QuestionFragment.OnAnswerSubmittedListener, TopicOverviewFragment.OnBeginQuizListener,
+        AnswerFragment.OnProceedQuizListener {
+
     public static final String TAG = "QuizActivity";
     public static final String NUM_QUESTIONS_MESSAGE =
             "edu.washington.nadava.quizdroid.NUM_QUESTIONS";

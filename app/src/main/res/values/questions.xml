@@ -54,7 +54,7 @@
     <integer-array name="heroes_correct_answers">
         <item>3</item>
         <item>0</item>
-        <item>3</item>
+        <item>1</item>
     </integer-array>
 
 </resources>
