@@ -1,8 +1,7 @@
 package edu.washington.nadava.quizdroid.topic;
 
 import java.util.ArrayList;
-
-import edu.washington.nadava.quizdroid.Question;
+import java.util.List;
 
 /**
  * Created by nadavash on 5/7/15.
@@ -11,14 +10,14 @@ public class Topic {
     private String title;
     private String description;
     private String longDescription;
-    private ArrayList<Question> questions;
+    private List<Question> questions;
 
     public Topic() {
 
     }
 
     public Topic(String title, String description, String longDescription,
-                 ArrayList<Question> questions) {
+                 List<Question> questions) {
         this.title = title;
         this.description = description;
         this.longDescription = longDescription;
@@ -47,5 +46,13 @@ public class Topic {
 
     public void setLongDescription(String value) {
         longDescription = value;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> value) {
+        questions = value;
     }
 }

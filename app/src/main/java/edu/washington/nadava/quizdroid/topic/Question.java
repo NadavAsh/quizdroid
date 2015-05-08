@@ -3,20 +3,21 @@ package edu.washington.nadava.quizdroid.topic;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by nadavash on 5/7/15.
  */
 public class Question {
     private String question;
-    private ArrayList<String> answers;
+    private List<String> answers;
     private int correct;
 
     public Question() {
 
     }
 
-    public Question(String question, ArrayList<String> answers, int correct) {
+    public Question(String question, List<String> answers, int correct) {
         this.question = question;
         this.answers = answers;
         this.correct = correct;
@@ -30,11 +31,11 @@ public class Question {
         question = value;
     }
 
-    public ArrayList<String> getAnswers() {
+    public List<String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(ArrayList<String> value) {
+    public void setAnswers(List<String> value) {
         answers = value;
     }
 

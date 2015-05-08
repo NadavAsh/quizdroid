@@ -22,12 +22,11 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         this.setTitle(getString(R.string.app_name) + " - " + getString(R.string.topics));
+        QuizApp app = (QuizApp)getApplication();
 
         final ListView topicsList = (ListView)findViewById(R.id.topics_list);
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        adapter.add(getString(R.string.topic_math));
-        adapter.add(getString(R.string.topic_physics));
-        adapter.add(getString(R.string.topic_super_heroes));
+        adapter.addAll(app.getTopicRepository().getAvailableTopics());
         topicsList.setAdapter(adapter);
 
         topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

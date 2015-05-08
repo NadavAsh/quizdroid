@@ -18,6 +18,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import edu.washington.nadava.quizdroid.topic.Question;
+import edu.washington.nadava.quizdroid.topic.Topic;
+
 
 public class QuizActivity extends ActionBarActivity implements
         QuestionFragment.OnAnswerSubmittedListener, TopicOverviewFragment.OnBeginQuizListener,
@@ -32,10 +35,7 @@ public class QuizActivity extends ActionBarActivity implements
 
     private int numAnswered;
     private int numCorrect;
-    private String[] questions;
-    private String[][] answers;
-    private int[] correctAnswers;
-    private String topic;
+    private Topic topic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +45,8 @@ public class QuizActivity extends ActionBarActivity implements
         processIntent();
 
         Bundle args = new Bundle();
-        args.putString(MainActivity.TOPIC_MESSAGE, topic);
-        args.putInt(TopicOverviewFragment.QUESTION_COUNT_MESSAGE, questions.length);
+        args.putString(MainActivity.TOPIC_MESSAGE, topic.getTitle());
+        args.putInt(TopicOverviewFragment.QUESTION_COUNT_MESSAGE, topic.getQuestions().size());
 
         Fragment topicFragment = new TopicOverviewFragment();
         topicFragment.setArguments(args);
@@ -59,48 +59,16 @@ public class QuizActivity extends ActionBarActivity implements
         Intent intent = getIntent();
 
         int[] resources = null;
-        topic = intent.getStringExtra(MainActivity.TOPIC_MESSAGE);
-        switch (topic) {
-            case "Math":
-                resources = new int[] {
-                        R.array.math_questions,
-                        R.array.math_answers,
-                        R.array.math_correct_answers
-                };
-                break;
-            case "Physics":
-                resources = new int[] {
-                        R.array.physics_questions,
-                        R.array.physics_answers,
-                        R.array.physics_correct_answers
-                };
-                break;
-            case "Marvel Super Heroes":
-                resources = new int[] {
-                        R.array.heroes_questions,
-                        R.array.heroes_answers,
-                        R.array.heroes_correct_answers
-                };
-                break;
-        }
-
-        Resources res = getResources();
-        questions = res.getStringArray(resources[0]);
-
-        String[] preAnswers = res.getStringArray(resources[1]);
-        answers = new String[preAnswers.length][];
-        for (int i = 0; i < preAnswers.length; ++i) {
-            answers[i] = preAnswers[i].split("\\|");
-        }
-
-        correctAnswers = res.getIntArray(resources[2]);
+        String topicTitle = intent.getStringExtra(MainActivity.TOPIC_MESSAGE);
+        topic = ((QuizApp)getApplication()).getTopicRepository().getTopic(topicTitle);
     }
 
     @Override
     public void onAnswerSubmittedListener(int answerIndex) {
         int current = numAnswered;
 
-        int correctIndex = correctAnswers[numAnswered];
+        Question question = topic.getQuestions().get(numAnswered);
+        int correctIndex = question.getCorrect();
         boolean correct = answerIndex == correctIndex;
         if (correct) {
             ++numCorrect;
@@ -110,11 +78,12 @@ public class QuizActivity extends ActionBarActivity implements
         Bundle bundle = new Bundle();
         bundle.putInt(NUM_QUESTIONS_MESSAGE, numAnswered);
         bundle.putInt(NUM_CORRECT_MESSAGE, numCorrect);
-        bundle.putString(PROMPT_MESSAGE, questions[current]);
-        bundle.putString(AnswerFragment.CHOICE_MESSAGE, answers[current][answerIndex]);
-        bundle.putString(AnswerFragment.CORRECT_ANSWER_MESSAGE, answers[current][correctIndex]);
+        bundle.putString(PROMPT_MESSAGE, question.getQuestion());
+        bundle.putString(AnswerFragment.CHOICE_MESSAGE, question.getAnswers().get(answerIndex));
+        bundle.putString(AnswerFragment.CORRECT_ANSWER_MESSAGE,
+                         question.getAnswers().get(correctIndex));
         bundle.putBoolean(AnswerFragment.CORRECT_MESSAGE, correct);
-        bundle.putBoolean(AnswerFragment.LAST_MESSAGE, numAnswered >= questions.length);
+        bundle.putBoolean(AnswerFragment.LAST_MESSAGE, numAnswered >= topic.getQuestions().size());
 
         Fragment answerFragment = new AnswerFragment();
         answerFragment.setArguments(bundle);
@@ -128,8 +97,9 @@ public class QuizActivity extends ActionBarActivity implements
     @Override
     public void onBeginQuiz() {
         Bundle bundle = new Bundle();
-        bundle.putString(PROMPT_MESSAGE, questions[numAnswered]);
-        bundle.putStringArray(ANSWERS_MESSAGE, answers[numAnswered]);
+        bundle.putString(PROMPT_MESSAGE, topic.getQuestions().get(numAnswered).getQuestion());
+        bundle.putStringArray(ANSWERS_MESSAGE,
+                (String[])topic.getQuestions().get(numAnswered).getAnswers().toArray());
 
         Fragment fragment = new QuestionFragment();
         fragment.setArguments(bundle);
@@ -141,7 +111,7 @@ public class QuizActivity extends ActionBarActivity implements
 
     @Override
     public void onProceedQuiz() {
-        if (numAnswered >= questions.length) {
+        if (numAnswered >= topic.getQuestions().size()) {
             finish();
         } else {
             onBeginQuiz();
