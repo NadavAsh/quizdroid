@@ -1,7 +1,10 @@
 package edu.washington.nadava.quizdroid;
 
 /**
- * Created by nadavash on 5/7/15.
+ * An interface to represent a repository of topic data for the QuizDroid application.
  */
 public interface TopicRepository {
+    public String[] getAvailableTopics();
+
+    public Topic getTopic(String topic);
 }
