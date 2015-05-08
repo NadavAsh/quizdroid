@@ -1,4 +1,4 @@
-package edu.washington.nadava.quizdroid;
+package edu.washington.nadava.quizdroid.topic;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

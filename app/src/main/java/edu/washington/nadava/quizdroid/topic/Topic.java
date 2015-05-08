@@ -1,6 +1,8 @@
-package edu.washington.nadava.quizdroid;
+package edu.washington.nadava.quizdroid.topic;
 
 import java.util.ArrayList;
+
+import edu.washington.nadava.quizdroid.Question;
 
 /**
  * Created by nadavash on 5/7/15.
