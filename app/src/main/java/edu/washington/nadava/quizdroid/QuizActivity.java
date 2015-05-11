@@ -49,7 +49,10 @@ public class QuizActivity extends ActionBarActivity implements
         Bundle args = new Bundle();
         args.putString(MainActivity.TOPIC_MESSAGE, topic.getTitle());
         args.putInt(TopicOverviewFragment.QUESTION_COUNT_MESSAGE, topic.getQuestions().size());
-        args.putString(TopicOverviewFragment.DESCRIPTION_MESSAGE, topic.getDescription());
+
+        args.putString(TopicOverviewFragment.DESCRIPTION_MESSAGE,
+                topic.getLongDescription() == null ?
+                        topic.getDescription() : topic.getLongDescription());
 
         Fragment topicFragment = new TopicOverviewFragment();
         topicFragment.setArguments(args);

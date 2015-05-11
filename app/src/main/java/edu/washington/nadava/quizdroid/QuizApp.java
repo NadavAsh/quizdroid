@@ -1,6 +1,7 @@
 package edu.washington.nadava.quizdroid;
 
 import android.app.Application;
+import android.content.res.Resources;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -30,7 +31,7 @@ public class QuizApp extends Application {
 
         try {
             InputStream istream = new FileInputStream(new File("/data/questions.json"));
-            topicRepo = new JsonTopicRepository(istream);
+            topicRepo = new JsonTopicRepository(istream, Resources.getSystem());
         } catch (FileNotFoundException e) {
             topicRepo = new InMemoryTopicRepository();
         } catch (JSONException e) {

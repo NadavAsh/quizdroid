@@ -7,6 +7,5 @@ import java.util.Set;
  */
 public interface TopicRepository {
     public Set<String> getAvailableTopics();
-
     public Topic getTopic(String topic);
 }

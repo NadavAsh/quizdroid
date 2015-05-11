@@ -31,5 +31,6 @@
     <string name="answered_corretly">Correct! :)</string>
     <string name="answered_incorrectly">Incorrect :(</string>
     <string name="quiz_stats" formatted="false">Answered %d out of %d questions correctly.</string>
+    <string name="topic_icon">topicIcon</string>
 
 </resources>

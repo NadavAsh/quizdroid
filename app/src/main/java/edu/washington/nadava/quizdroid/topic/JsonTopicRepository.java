@@ -1,5 +1,6 @@
 package edu.washington.nadava.quizdroid.topic;
 
+import android.content.res.Resources;
 import android.util.JsonReader;
 
 import org.json.JSONArray;
@@ -15,13 +16,14 @@ import java.util.*;
 public class JsonTopicRepository implements TopicRepository {
     public HashMap<String, Topic> topics;
 
-    public JsonTopicRepository(InputStream reader) throws JSONException {
+    public JsonTopicRepository(InputStream reader, Resources res) throws JSONException {
         topics = new HashMap<>();
 
         String text = new Scanner(reader).useDelimiter("\\A").next();
         JSONArray jsonTopics = new JSONArray(text);
         for (int i = 0; i < jsonTopics.length(); ++i) {
             Topic topic = Topic.fromJson(jsonTopics.getJSONObject(i));
+            topic.setIcon(res.getDrawable(android.R.drawable.sym_def_app_icon));
             topics.put(topic.getTitle(), topic);
         }
     }

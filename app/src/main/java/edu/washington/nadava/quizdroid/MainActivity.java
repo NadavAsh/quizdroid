@@ -7,9 +7,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import edu.washington.nadava.quizdroid.topic.Topic;
+import edu.washington.nadava.quizdroid.topic.TopicRepository;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -24,9 +30,25 @@ public class MainActivity extends ActionBarActivity {
         this.setTitle(getString(R.string.app_name) + " - " + getString(R.string.topics));
         QuizApp app = (QuizApp)getApplication();
 
+        final TopicRepository repo = app.getTopicRepository();
         final ListView topicsList = (ListView)findViewById(R.id.topics_list);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        adapter.addAll(app.getTopicRepository().getAvailableTopics());
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                R.layout.icon_simple_list_item_2, android.R.id.text1) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                ImageView icon = (ImageView) view.findViewById(R.id.icon);
+                String topic = this.getItem(position);
+                text1.setText(topic);
+                Topic topicObj = repo.getTopic(topic);
+                text2.setText(topicObj.getDescription());
+                icon.setImageDrawable(topicObj.getIcon());
+                return view;
+            }
+        };
+        adapter.addAll(repo.getAvailableTopics());
         topicsList.setAdapter(adapter);
 
         topicsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
