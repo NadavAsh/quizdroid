@@ -1,5 +1,9 @@
 package edu.washington.nadava.quizdroid.topic;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +15,21 @@ public class Topic {
     private String description;
     private String longDescription;
     private List<Question> questions;
+
+    public static Topic fromJson(JSONObject jsonTopic) throws JSONException {
+        Topic topic = new Topic();
+        topic.setTitle(jsonTopic.getString("title"));
+        topic.setDescription(jsonTopic.getString("desc"));
+
+        JSONArray jsonQuestions = jsonTopic.getJSONArray("questions");
+        List<Question> questions = new ArrayList<>();
+        for (int i = 0; i < jsonQuestions.length(); ++i) {
+            questions.add(Question.fromJson(jsonQuestions.getJSONObject(i)));
+        }
+        topic.setQuestions(questions);
+
+        return topic;
+    }
 
     public Topic() {
 

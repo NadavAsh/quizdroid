@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.washington.nadava.quizdroid" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".QuizApp"
         android:allowBackup="true"
@@ -18,14 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TopicActivity"
-            android:label="@string/title_activity_topic"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.nadava.quizdroid.MainActivity" />
-        </activity>
-        <activity
             android:name=".QuizActivity"
             android:label="@string/title_activity_quiz"
             android:parentActivityName=".MainActivity" >
@@ -33,14 +27,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.washington.nadava.quizdroid.MainActivity" />
         </activity>
-        <activity
-            android:name=".AnswerActivity"
-            android:label="@string/title_activity_answer"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="edu.washington.nadava.quizdroid.MainActivity" />
-        </activity>
+
     </application>
 
 </manifest>

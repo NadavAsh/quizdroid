@@ -18,6 +18,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 import edu.washington.nadava.quizdroid.topic.Question;
 import edu.washington.nadava.quizdroid.topic.Topic;
 
@@ -47,6 +49,7 @@ public class QuizActivity extends ActionBarActivity implements
         Bundle args = new Bundle();
         args.putString(MainActivity.TOPIC_MESSAGE, topic.getTitle());
         args.putInt(TopicOverviewFragment.QUESTION_COUNT_MESSAGE, topic.getQuestions().size());
+        args.putString(TopicOverviewFragment.DESCRIPTION_MESSAGE, topic.getDescription());
 
         Fragment topicFragment = new TopicOverviewFragment();
         topicFragment.setArguments(args);
@@ -89,7 +92,7 @@ public class QuizActivity extends ActionBarActivity implements
         answerFragment.setArguments(bundle);
 
         getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+                .setCustomAnimations(R.animator.card_flip_right_in, R.animator.card_flip_right_out)
                 .replace(R.id.quiz_fragment_container, answerFragment)
                 .commit();
     }
@@ -98,13 +101,14 @@ public class QuizActivity extends ActionBarActivity implements
     public void onBeginQuiz() {
         Bundle bundle = new Bundle();
         bundle.putString(PROMPT_MESSAGE, topic.getQuestions().get(numAnswered).getQuestion());
-        bundle.putStringArray(ANSWERS_MESSAGE,
-                (String[])topic.getQuestions().get(numAnswered).getAnswers().toArray());
+
+        List<String> answers =  topic.getQuestions().get(numAnswered).getAnswers();
+        bundle.putStringArray(ANSWERS_MESSAGE, answers.toArray(new String[answers.size()]));
 
         Fragment fragment = new QuestionFragment();
         fragment.setArguments(bundle);
         getFragmentManager().beginTransaction()
-                .setCustomAnimations(R.animator.card_flip_left_in, R.animator.card_flip_left_out)
+                .setCustomAnimations(R.animator.card_flip_right_in, R.animator.card_flip_right_out)
                 .replace(R.id.quiz_fragment_container, fragment)
                 .commit();
     }

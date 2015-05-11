@@ -83,7 +83,6 @@ public class QuestionFragment extends Fragment {
                 submitButton.setEnabled(true);
             }
         });
-
         return view;
     }
 

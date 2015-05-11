@@ -15,9 +15,12 @@ import android.widget.TextView;
 public class TopicOverviewFragment extends Fragment {
     public static final String QUESTION_COUNT_MESSAGE =
             "edu.washington.nadava.quizdroid.QUESTION_COUNT";
+    public static final String DESCRIPTION_MESSAGE =
+            "edu.washington.nadava.quizdroid.DESCRIPTION";
 
     private String topic;
     private int questionCount;
+    private String description;
 
     private OnBeginQuizListener beginQuizListener;
 
@@ -42,6 +45,7 @@ public class TopicOverviewFragment extends Fragment {
         Bundle args = getArguments();
         topic = args.getString(MainActivity.TOPIC_MESSAGE);
         questionCount = args.getInt(QUESTION_COUNT_MESSAGE);
+        description = args.getString(DESCRIPTION_MESSAGE);
     }
 
     @Override
@@ -57,17 +61,7 @@ public class TopicOverviewFragment extends Fragment {
         questionCount.setText(Integer.toString(this.questionCount));
 
         TextView description = (TextView)view.findViewById(R.id.text_view_description);
-        switch (topic) {
-            case "Math":
-                description.setText(R.string.topic_math_description);
-                break;
-            case "Physics":
-                description.setText(R.string.topic_physics_description);
-                break;
-            case "Marvel Super Heroes":
-                description.setText(R.string.topic_super_heroes_description);
-                break;
-        }
+        description.setText(this.description);
 
         Button beginButton = (Button)view.findViewById(R.id.start_quiz_button);
         beginButton.setOnClickListener(new View.OnClickListener() {

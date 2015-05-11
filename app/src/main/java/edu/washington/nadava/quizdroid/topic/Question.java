@@ -1,7 +1,14 @@
 package edu.washington.nadava.quizdroid.topic;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +19,21 @@ public class Question {
     private String question;
     private List<String> answers;
     private int correct;
+
+    public static Question fromJson(JSONObject jsonQuestion) throws JSONException {
+        Question question = new Question();
+        question.setQuestion(jsonQuestion.getString("text"));
+
+        JSONArray jsonAnswers = jsonQuestion.getJSONArray("answers");
+        List<String> answers = new ArrayList<>();
+        for (int i = 0; i < jsonAnswers.length(); ++i) {
+            answers.add(jsonAnswers.getString(i));
+        }
+        question.setAnswers(answers);
+        question.setCorrect(Integer.parseInt(jsonQuestion.getString("answer")) - 1);
+
+        return question;
+    }
 
     public Question() {
 
@@ -43,7 +65,7 @@ public class Question {
         return correct;
     }
 
-    public void getCorrect(int value) {
+    public void setCorrect(int value) {
         correct = value;
     }
 }
