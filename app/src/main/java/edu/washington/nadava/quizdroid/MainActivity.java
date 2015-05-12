@@ -1,6 +1,7 @@
 package edu.washington.nadava.quizdroid;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class MainActivity extends ActionBarActivity {
 
         final TopicRepository repo = app.getTopicRepository();
         final ListView topicsList = (ListView)findViewById(R.id.topics_list);
+
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.icon_simple_list_item_2, android.R.id.text1) {
             @Override
@@ -44,7 +46,9 @@ public class MainActivity extends ActionBarActivity {
                 text1.setText(topic);
                 Topic topicObj = repo.getTopic(topic);
                 text2.setText(topicObj.getDescription());
-                icon.setImageDrawable(topicObj.getIcon());
+                if (topicObj.getIcon() != null) {
+                    icon.setImageDrawable(topicObj.getIcon());
+                }
                 return view;
             }
         };

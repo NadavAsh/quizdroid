@@ -23,7 +23,7 @@ public class InMemoryTopicRepository implements TopicRepository {
         mathQuestions.add(new Question("Where was Paul Erdos born?",
                 Arrays.asList("Bulgaria","England","Germany","Hungary"), 3));
         Topic math = new Topic("Math", "Math problems and history.",
-                               "Yo", mathQuestions);
+                               null, mathQuestions);
 
 
         List<Question> physicsQuestions = new ArrayList<>();
@@ -39,7 +39,7 @@ public class InMemoryTopicRepository implements TopicRepository {
                 Arrays.asList("Stephen Hawking","Isaac Newton","Albert Einstein","Nikola Tesla"),
                 2));
         Topic physics = new Topic("Physics", "Physics problems and history.",
-                                  "Yo", physicsQuestions);
+                                  null, physicsQuestions);
 
         List<Question> heroesQuestions = new ArrayList<>();
         heroesQuestions.add(new Question(
@@ -54,7 +54,7 @@ public class InMemoryTopicRepository implements TopicRepository {
                 Arrays.asList("Loud noises","Anger","Spicy food","Opera vocals"),
                 1));
         Topic superHeroes = new Topic("Marvel Super Heroes",
-                "Marvel super heroes, comic books and movie lore.", "Yo", heroesQuestions);
+                "Super heroes, comic books and movies.", null, heroesQuestions);
 
 
         topics.put("Marvel Super Heroes", superHeroes);

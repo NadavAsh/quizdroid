@@ -31,7 +31,7 @@ public class QuizApp extends Application {
 
         try {
             InputStream istream = new FileInputStream(new File("/data/questions.json"));
-            topicRepo = new JsonTopicRepository(istream, Resources.getSystem());
+            topicRepo = new JsonTopicRepository(istream);
         } catch (FileNotFoundException e) {
             topicRepo = new InMemoryTopicRepository();
         } catch (JSONException e) {
