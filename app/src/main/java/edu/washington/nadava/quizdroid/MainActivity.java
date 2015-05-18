@@ -117,6 +117,9 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Load shared preferences and initialize the repeating download task.
+     */
     private void loadPreferences() {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String dataLocation = pref.getString(getString(R.string.data_location),
