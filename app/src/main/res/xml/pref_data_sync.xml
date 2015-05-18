@@ -1,0 +1,15 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Data Sync">
+        <EditTextPreference
+            android:key="sync_frequency"
+            android:title="Sync frequency (minutes)"
+            android:defaultValue="30" />
+
+        <EditTextPreference
+            android:key="data_location"
+            android:title="Data location"
+            android:defaultValue="http://tednewardsandbox.site44.com/questions.json"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
