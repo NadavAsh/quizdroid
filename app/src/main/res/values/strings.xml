@@ -8,6 +8,8 @@
     <string name="topic_physics">Physics</string>
     <string name="topic_super_heroes">Marvel Super Heroes</string>
 
+    <string name="preferecence_file_key">edu.washington.nadava.quizdroid.PREFERENCE_FILE_KEY</string>
+
     <!-- TopicActivity -->
     <string name="title_activity_topic">Topic Overview</string>
     <string name="start_quiz">Begin</string>

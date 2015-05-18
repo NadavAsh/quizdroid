@@ -1,7 +1,14 @@
 package edu.washington.nadava.quizdroid;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.washington.nadava.quizdroid.topic.Topic;
 import edu.washington.nadava.quizdroid.topic.TopicRepository;
@@ -23,10 +31,18 @@ public class MainActivity extends ActionBarActivity {
     public static final String TAG = "MainActivity";
     public static final String TOPIC_MESSAGE = "edu.washington.nadava.quizdroid.TOPIC";
 
+    public static final String DOWNLOAD_FILTER = "edu.washington.nadava.quizdroid.download";
+    public static final String DATA_LOCATION = "edu.washington.nadava.quizdroid.DATA_LOCATION";
+
+    private AlarmManager alarmManager;
+    private BroadcastReceiver downloadReceiver;
+    private PendingIntent downloadIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        loadPreferences();
 
         this.setTitle(getString(R.string.app_name) + " - " + getString(R.string.topics));
         QuizApp app = (QuizApp)getApplication();
@@ -68,6 +84,13 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(downloadReceiver);
+        alarmManager.cancel(downloadIntent);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,5 +115,38 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadPreferences() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String dataLocation = pref.getString(getString(R.string.data_location),
+                "http://tednewardsandbox.site44.com/questions.json");
+        int syncFreq = 30;
+        try {
+            syncFreq = Integer.parseInt(pref.getString(getString(R.string.sync_frequency), "30"));
+        } catch (NumberFormatException e) {
+            Log.e(TAG, "Error parsing preference 'sync_frequency': " +e .getMessage());
+        }
+        Log.i(TAG, "location: " + dataLocation + " frequency: " + syncFreq);
+
+        downloadReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.i(TAG, "Download broadcast received.");
+                Toast.makeText(MainActivity.this, intent.getStringExtra(DATA_LOCATION),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        registerReceiver(downloadReceiver, new IntentFilter(DOWNLOAD_FILTER));
+
+        Intent i = new Intent();
+        i.setAction(DOWNLOAD_FILTER);
+        i.putExtra(DATA_LOCATION, dataLocation);
+
+        downloadIntent = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis() - 1000,
+                syncFreq * 60 * 1000, downloadIntent);
     }
 }
