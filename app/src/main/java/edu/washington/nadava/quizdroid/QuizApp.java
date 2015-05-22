@@ -1,11 +1,14 @@
 package edu.washington.nadava.quizdroid;
 
 import android.app.Application;
-import android.content.res.Resources;
 import android.util.Log;
 
 import org.json.JSONException;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import edu.washington.nadava.quizdroid.topic.InMemoryTopicRepository;
 import edu.washington.nadava.quizdroid.topic.JsonTopicRepository;
@@ -27,10 +30,15 @@ public class QuizApp extends Application {
         } else {
             throw new RuntimeException("Cannot instantiate more than one instance of QuizApp.");
         }
+    }
 
-
+    public void loadTopicRepo(File f) {
+        if (f == null) {
+            topicRepo = new InMemoryTopicRepository();
+            return;
+        }
         try {
-            InputStream istream = new FileInputStream(new File("/data/questions.json"));
+            InputStream istream = new FileInputStream(f);
             topicRepo = new JsonTopicRepository(istream);
         } catch (FileNotFoundException e) {
             topicRepo = new InMemoryTopicRepository();

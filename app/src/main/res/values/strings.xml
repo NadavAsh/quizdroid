@@ -8,6 +8,8 @@
     <string name="topic_physics">Physics</string>
     <string name="topic_super_heroes">Marvel Super Heroes</string>
 
+    <string name="download_location">"http://tednewardsandbox.site44.com/questions.json"</string>
+
     <string name="preferecence_file_key">edu.washington.nadava.quizdroid.PREFERENCE_FILE_KEY</string>
 
     <!-- TopicActivity -->

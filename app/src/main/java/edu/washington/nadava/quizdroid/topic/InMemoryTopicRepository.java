@@ -1,8 +1,11 @@
 package edu.washington.nadava.quizdroid.topic;
 
-import java.util.*;
-
-import edu.washington.nadava.quizdroid.R;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by nadavash on 5/7/15.

@@ -1,14 +1,13 @@
 package edu.washington.nadava.quizdroid.topic;
 
-import android.content.res.Resources;
-import android.util.JsonReader;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by nadavash on 5/7/15.
